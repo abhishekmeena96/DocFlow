@@ -14,6 +14,7 @@ Objective: Know exactly what is installed, and create the project records that e
 - [x] 00.8 features/ starter files
 - [x] 00.9 Questions blocks and CURRENT_STATE refresh
 
+
 ## Scope and files
 docs/*.md, docs/phases/*.md, docs/features/*.md under ~/projects/DocFlow
 
@@ -42,3 +43,4 @@ Concepts: Markdown as project memory, status labels, authoritative records, insp
 2. [scenario] CURRENT_STATE.md and the real repository disagree. What do you do?
 3. [design] Why keep project memory, learning notes and source code in three separate systems?
 Answers: (fill in as you learn)
+

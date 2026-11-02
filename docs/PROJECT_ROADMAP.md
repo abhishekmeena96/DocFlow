@@ -30,12 +30,12 @@ Depends on: none
 ## Phase 01 - Project structure, Git and GitHub
 Depends on: 00
 - [x] 01.1 Check Git and repo state
-- [ ] 01.2 Create the application folder structure (Angular frontend and NestJS backend)
-- [ ] 01.3 Add .gitignore and .env.example
-- [ ] 01.4 First commit
-- [ ] 01.5 Connect GitHub and push
-- [ ] 01.6 Secrets check
-- [ ] Phase gate
+- [x] 01.2 Create the application folder structure (Angular frontend and NestJS backend)
+- [x] 01.3 Add .gitignore and .env.example
+- [x] 01.4 First commit
+- [x] 01.5 Connect GitHub and push
+- [x] 01.6 Secrets check
+- [x] Phase gate
 
 ## Phase 02 - NestJS backend foundation
 Depends on: 01

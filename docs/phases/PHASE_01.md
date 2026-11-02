@@ -1,15 +1,16 @@
 # PHASE_01 - Project structure, Git and GitHub
 
-Status: In Progress | Depends on: 00
+Status:  Complete | Depends on: 00
+
 Objective: Create the Angular and NestJS application structure, manage the projects in one Git repository, and push safely to GitHub.
 
 ## Sub-phases
 - [x] 01.1 Check Git and repo state
-- [ ] 01.2 Create the application folder structure
-- [ ] 01.3 Add .gitignore and .env.example
-- [ ] 01.4 First commit
-- [ ] 01.5 Connect GitHub and push
-- [ ] 01.6 Secrets check
+- [x] 01.2 Create the application folder structure
+- [x] 01.3 Add .gitignore and .env.example
+- [x] 01.4 First commit
+- [x] 01.5 Connect GitHub and push
+- [x] 01.6 Secrets check
 
 ## Scope and files (preview)
 apps/frontend/, apps/backend/, libs/, package.json (if needed), .gitignore, .env.example, README.md
@@ -33,12 +34,13 @@ apps/frontend/, apps/backend/, libs/, package.json (if needed), .gitignore, .env
 
 
 
+
 ## Completion criteria
 
-- [ ] Angular frontend and NestJS backend folder structures are created.
+- [x] Angular frontend and NestJS backend folder structures are created.
 - [ ] Both applications initialize and build successfully.
-- [ ] First commit pushed and verified on GitHub.
-- [ ] .env is ignored and .env.example is committed.
+- [x] First commit pushed and verified on GitHub.
+- [x] .env is ignored and .env.example is committed.
 - [ ] Owner manual check done.
 
 ## Detailed tasks
