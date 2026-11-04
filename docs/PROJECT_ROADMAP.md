@@ -39,13 +39,14 @@ Depends on: 00
 
 ## Phase 02 - NestJS backend foundation
 Depends on: 01
-- [ ] 02.1 Generate docflow-api
-- [ ] 02.2 Config module and env validation
-- [ ] 02.3 Global prefix and ValidationPipe
-- [ ] 02.4 Global exception filter
-- [ ] 02.5 Health endpoint
-- [ ] 02.6 Tests
-- [ ] Phase gate
+- [x] 02.1 Generate docflow-api
+- [x] 02.2 Config module and env validation
+- [x] 02.3 Global prefix and ValidationPipe
+- [x] 02.4 Global exception filter
+- [x] 02.5 Swagger / OpenAPI documentation
+- [x] 02.6 Health endpoint
+- [x] 02.7 Tests
+- [x] 02.8 Phase gate
 
 ## Phase 03 - Database and plain SQL (amended: no Prisma)
 Depends on: 02
