@@ -1,183 +1,46 @@
-# DocFlow — Current State
+# DocFlow - Current State
 
-Last updated: 2026-11-03
+Last updated: 2026-11-12 (after Phase 03 work)
 
 ## Current phase and task
+Phase 03 - Database and plain SQL: all sub-phases 03.1 to 03.8 Verified, clean rebuild verified. Waiting for the owner gate.
+Next: Phase 04 - Auth and users (backend).
 
-Current: Phase 02 — NestJS backend foundation (In Progress).
-
-Completed sub-phases:
-- Phase 00: 00.1 to 00.9 and owner gate.
-- Phase 01: 01.1 to 01.6 and owner gate.
-- Phase 02: 02.1 to 02.7 implementation, cleanup and verification.
-
-Current sub-phase: 02.8 — Phase gate.
-
-Next phase: Phase 03 — Database Foundation (Not Started).
-
-Phase 02 technical implementation and verification are complete.
-Owner review and approval are pending.
-
-## Completed, with evidence
-
-### Phase 00
-- Verified with owner output.
-- Owner manual gate passed.
-
-### Phase 01
-- Project structure created.
-- Git setup completed.
-- GitHub connection established.
-- Initial documentation completed and pushed.
-- Phase 01 owner gate passed.
-
-### Phase 02 — NestJS backend foundation
-
-- 02.1: NestJS application `docflow-api` generated under `apps/backend/docflow-api/`.
-- 02.2: ConfigModule and Joi environment validation implemented.
-- Invalid `PORT` value was rejected during application startup.
-- 02.3: Global `/api` prefix and ValidationPipe configured.
-- Invalid request body returns HTTP 400.
-- Extra request properties are rejected.
-- 02.4: Global HTTP exception filter implemented and registered.
-- Standard error response fields: `statusCode`, `message`, `timestamp`, `path`.
-- HTTP 404 response verified with the full `/api` path.
-- Unexpected exception handling returns the standard HTTP 500 response; filter unit test passed.
-- 02.5: Swagger / OpenAPI configured. User confirmed completion.
-- Swagger path: `/api/docs`.
-- 02.6: Health endpoint implemented.
-- `GET /api/health` returned HTTP 200 with status `ok` and timestamp.
-
-### Automated test evidence
-
-Latest reported results:
-
-- Unit tests: 3 suites passed, 3 tests passed.
-- E2E tests: 1 suite passed, 4 tests passed.
-- Build: `npm run build` successful.
-- Earlier lint run: 0 warnings and 0 errors.
-
-The latest unit tests cover:
-- AppController.
-- HealthController.
-- HttpExceptionFilter unexpected-error handling.
-
-The latest E2E tests cover:
-- Health endpoint.
-- Standard 404 response.
-- Invalid request body.
-- Rejection of extra request properties.
-
-Note: The 500 behaviour is verified directly at the exception-filter unit-test level, not through a real HTTP request that triggers an unexpected exception.
-
-## In progress
-
-### Phase 02.7 — Automated tests and final cleanup
-
-Core tests are passing. Remaining work:
-
-- Remove temporary `POST /api/test` validation endpoint from `AppController`.
-- Remove temporary `TestDto` if no longer used.
-- Preserve the useful validation tests without keeping temporary production API functionality.
-- Run final build and lint after cleanup.
-- Review Phase 02 evidence and completion criteria.
-
-### Phase 02.8 — Phase gate
-
-Pending:
-- Review the final Phase 02 implementation.
-- Confirm documentation is accurate.
-- Owner manual review and approval.
-
-Phase 02 must not be marked COMPLETE until the owner approves the phase gate.
-
-## Environment and repository
-
-Environment:
-- Ubuntu 22.04.1 LTS
-- Node v24.21.0
-- npm 11.19.0
-- Git 2.34.1
-- Docker 29.9.2
-- Docker Compose v5.6.1
-- VS Code 1.144.0
-
-Repository:
-- Git initialized.
-- Branch: `main`.
-- Remote: `origin` (GitHub).
-- Project path: `/home/abhishek/projects/DocFlow`.
-
-Application structure:
-
-```text
-DocFlow/
-├── apps/
-│   ├── frontend/
-│   └── backend/
-│       └── docflow-api/
-├── libs/
-└── docs/
-```
-
-Environment files:
-- `.gitignore` created and verified.
-- `.env.example` created and verified.
-- `.env` is intended to remain untracked.
-
-Untracked personal notes such as `my.md` must not be committed without explicit approval.
+## Completed, with evidence level
+- Phase 00: Verified. Phase 01: Complete (owner-reported). Phase 02: Verified (3 unit, 4 e2e tests, build, health, Swagger, env validation).
+- 03.1 Verified: Postgres 17 in Docker, host port 5433, healthy. Commit 4803c5d.
+- 03.2 Verified: pg database service, "Database connection OK" at startup, wrong password stops startup. Commit edd2eb8.
+- 03.3 to 03.8 Verified (commit 833822d):
+  - db/migrate.js runner: advisory lock, schema_migrations with checksums, one transaction per file, second run skips.
+  - 001 users, 002 documents + document_versions, 003 reviews + audit_logs. 6 tables. UUID ids, CHECK constraints, ON DELETE RESTRICT, immutable triggers.
+  - db/tests/constraints.sql: 13 PASS, 3 OK, rolled back.
+  - db/seed.js: Admin created from .env (bcryptjs, hash length 60), re-run changes nothing.
+  - Unit 3 passed, e2e 4 passed, build clean.
 
 ## Approved decisions
-
-- D1: NestJS.
-- D2: Plain monorepo (separate Angular and NestJS applications).
-- D3: Angular + Material + SCSS + NgRx + RxJS.
-- D4: ACA-style extension JSON.
-- D5: One role per user.
-- D6: No self-review.
-- D7: Rejection → new version.
-- D8: No optional features in v1.
-- D9: Plain SQL using `pg`; no Prisma.
-
-Details: `docs/TECHNICAL_DECISIONS.md`.
+D1 NestJS. D2 plain folders, no Nx. D3 Angular + Material + SCSS + NgRx + RxJS. D4 ACA-style extension JSON. D5 one role per user. D6 no self-review. D7 rejection -> new version. D8 no optional features in v1. D9 plain SQL with pg, no Prisma.
+Phase 03: own migration runner (O2), migrations in apps/backend/docflow-api/db/migrations, statuses pending_review / approved / rejected (O6 settled), bcryptjs for the seed (confirm in Phase 04, O4).
 
 ## Open items
+1. Clean rebuild verified 2026-11-12: down -v, up, migrate (3 applied), seed (Admin created), 6 tables. Phase 03 owner gate pending.
+2. Stray 002_*.sql and 003_*.sql in the backend root were confirmed identical to the real migrations and deleted. apps/frontend and docs/frontend are untracked and not reviewed by Claude. my.md and apps/backend/practice are untracked. Do not commit without approval.
+3. Known issues: health response has timestamp, not a service field; Swagger responses and error schemas thin; Phase 07.1 overlaps 02.5; 26 npm vulnerabilities (do not run npm audit fix --force); e2e tests need the Postgres container and a root .env; D6 rule is enforced in the service in Phase 06.
+4. Records to tick: 03.3 to 03.8 in PHASE_03.md and PROJECT_ROADMAP.md; D2 and Phase 03 choices in the TECHNICAL_DECISIONS.md change log; ARCHITECTURE.md and MASTER_CONTEXT.md still mention Nx or Prisma if unchanged.
+5. .env rules: alphanumeric DB password; POSTGRES_PASSWORD and the password in DATABASE_URL must match; never paste .env or ADMIN_PASSWORD.
+6. Git push uses an HTTPS personal access token. ~/employee-management-system is a separate project, do not touch.
 
-- O6: Maximum PDF size and exact status names still undecided.
-- Optional extra feature files not created:
-  - document-versioning
-  - user-management
-  - extension-system
-  - crud-library
-- `~/employee-management-system` is a separate project. Do not touch it.
+## Repository state
+Branch main, latest pushed commit 833822d. Layout: apps/backend/docflow-api (NestJS 12), apps/frontend, libs, docs, docker-compose.yml.
 
 ## Next task
-
-Finish Phase 02:
-
-1. Remove temporary validation endpoint and DTO.
-2. Preserve the validation tests appropriately.
-3. Run final build and lint.
-4. Review Phase 02 documentation and evidence.
-5. Complete owner phase gate.
-
-Then proceed to Phase 03 — Database Foundation.
-
-Phase 03 direction:
-- PostgreSQL.
-- Backend database connection configuration.
-- Plain SQL using Node.js `pg`.
-- Database schema and migration approach.
-- Reusable database access layer.
-
-Prisma is explicitly excluded.
+Run the clean rebuild, pass the Phase 03 gate, then plan Phase 04 (auth, JWT, roles, user management).
 
 ## Questions
-
 Types: concept, scenario, design, debugging. Owner writes the answers. DeepSeek and Grok extend this list.
 
 1. [scenario] You return after two weeks away. What do you read first, and what do you verify before continuing?
-2. [debugging] This file says an endpoint exists but a request returns 404. Which source is authoritative and why?
-3. [design] Why record the evidence level next to each completed task?
-
+2. [debugging] A migration file was saved empty and the runner recorded it as applied. How do you detect and repair it?
+3. [design] Why enforce "one review per version" with a UNIQUE constraint instead of only an if in the service?
+4. [concept] Why does the migration runner store a checksum for each applied file?
+5. [design] Why block UPDATE and DELETE on audit_logs with a trigger and not just by never writing such queries?
 Answers: (fill in as you learn)
